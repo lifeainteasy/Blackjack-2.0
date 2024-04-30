@@ -9,6 +9,26 @@ const messageDiv = document.getElementById("message");
 let playerCards = [];
 let dealerCards = [];
 let deck = [];
+const placeBetBtn = document.getElementById("place-bet");
+const betAmountInput = document.getElementById("bet-amount");
+
+let chips = 1000;
+let currentBet = 0;
+
+function updateChipsDisplay() {
+  showMessage(`Chips: ${chips}`);
+}
+
+function placeBet() {
+  currentBet = parseInt(betAmountInput.value);
+  if (currentBet > chips) {
+    showMessage("You don't have enough chips to place this bet.");
+  } else {
+    chips -= currentBet;
+    updateChipsDisplay();
+    startGame();
+  }
+}
 
 function createDeck() {
   deck = [];
@@ -86,8 +106,9 @@ function startGame() {
   renderHand(playerCards, playerCardsDiv);
   renderHand(dealerCards, dealerCardsDiv);
   showMessage("Player's turn");
-  hitBtn.disabled = false;
-  standBtn.disabled = false;
+  hitBtn.disabled = true;
+  standBtn.disabled = true;
+  placeBetBtn.disabled = false;
 }
 
 function hit() {
@@ -108,20 +129,36 @@ function stand() {
     dealCard(deck, dealerCards);
     renderHand(dealerCards, dealerCardsDiv);
   }
-
-  const playerValue = calculateHandValue(playerCards);
-  const dealerValue = calculateHandValue(dealerCards);
-
   if (dealerValue > 21) {
-    showMessage("Dealer busted! Player wins.");
+    endGame("win");
   } else if (dealerValue === playerValue) {
-    showMessage("It's a tie!");
+    endGame("tie");
   } else if (dealerValue > playerValue) {
-    showMessage("Dealer wins.");
+    endGame("lose");
   } else {
-    showMessage("Player wins.");
+    endGame("win");
   }
 }
+ function endGame(result) {
+  if (result === "win") {
+    showMessage("Player wins!");
+    chips += currentBet * 2;
+  } else if (result === "tie") {
+    showMessage("It's a tie!");
+    chips += currentBet;
+  } else {
+    showMessage("Dealer wins.");
+  }
+  updateChipsDisplay();
+  placeBetBtn.disabled = false;
+ }
+
+placeBetBtn.addEventListener("click", placeBet);
+ 
+  const playerValue = calculateHandValue(playerCards);
+  const dealerValue = calculateHandValue(dealerCards);
+updateChipsDisplay();
+startGameBtn.disabled = true;
 
 startGameBtn.addEventListener("click", startGame);
 hitBtn.addEventListener("click", hit);
