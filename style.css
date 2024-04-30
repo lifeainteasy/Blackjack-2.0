@@ -1,0 +1,34 @@
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+button {
+  margin: 10px;
+}
+
+#game-board {
+  display: inline-block;
+  background-color: lightgreen;
+  border: 5px solid darkgreen;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+#player-cards, #dealer-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card {
+  margin: 5px;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+
+
