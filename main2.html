@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>블랙잭 게임</title>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body {
+    background-color: #F0F0F0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.hand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.hand .card {
+    width: 100px;
+    height: 150px;
+    background-size: cover;
+    margin: 5px;
+}
+
+.controls {
+    margin-top: 20px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mt-4 mb-5">블랙잭 게임</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="player">
+                <h2 class="text-center">플레이어</h2>
+                <div id="player-hand" class="hand justify-content-center"></div>
+                <p class="text-center mt-3">점수: <span id="player-score">0</span></p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="dealer">
+                <h2 class="text-center">딜러</h2>
+                <div id="dealer-hand" class="hand justify-content-center"></div>
+                <p class="text-center mt-3">점수: <span id="dealer-score">0</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="controls text-center">
+                <input type="number" id="bet-amount" class="form-control mb-2" min="1" placeholder="배팅액">
+                <button onclick="placeBet()" class="btn btn-primary mr-2">배팅하기</button>
+                <button onclick="deal()" class="btn btn-success mr-2">딜</button>
+                <button onclick="hit()" class="btn btn-info mr-2">히트</button>
+                <button onclick="stand()" class="btn btn-warning">스탠드</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+let playerHand = [];
+let dealerHand = [];
+let playerScore = 0;
+let dealerScore = 0;
+let betAmount = 0;
+
+function hit() {
+    let card = Math.floor(Math.random() * 10) + 1;
+    playerHand.push(card);
+    updatePlayerHand();
+}
+
+function stand() {
+    while(dealerScore < 17) {
+        let card = Math.floor(Math.random() * 10) + 1;
+        dealerHand.push(card);
+        updateDealerHand();
+    }
+    determineWinner();
+}
+
+function deal() {
+    playerHand = [];
+    dealerHand = [];
+    playerScore = 0;
+    dealerScore = 0;
+    betAmount = 0;
+    updatePlayerHand();
+    updateDealerHand();
+    document.getElementById("player-score").innerText = "0";
+    document.getElementById("dealer-score").innerText = "0";
+}
+
+function placeBet() {
+    betAmount = parseInt(document.getElementById("bet-amount").value);
+}
+
+function updatePlayerHand() {
+    let handElement = document.getElementById("player-hand");
+    handElement.innerHTML = "";
+    playerScore = 0;
+    for(let card of playerHand) {
+        handElement.innerHTML += '<div class="card"></div>';
+        playerScore += card;
+    }
+    document.getElementById("player-score").innerText = playerScore;
+}
+
+function updateDealerHand() {
+    let handElement = document.getElementById("dealer-hand");
+    handElement.innerHTML = "";
+    dealerScore = 0;
+    for(let card of dealerHand) {
+        handElement.innerHTML += '<div class="card"></div>';
+        dealerScore += card;
+    }
+    document.getElementById("dealer-score").innerText = dealerScore;
+}
+
+function determineWinner() {
+    // Determine winner based on scores
+}
+</script>
+</body>
+</html>
