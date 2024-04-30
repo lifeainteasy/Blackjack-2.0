@@ -106,9 +106,9 @@ function startGame() {
   renderHand(playerCards, playerCardsDiv);
   renderHand(dealerCards, dealerCardsDiv);
   showMessage("Player's turn");
-  hitBtn.disabled = true;
-  standBtn.disabled = true;
-  placeBetBtn.disabled = false;
+  hitBtn.disabled = false;
+  standBtn.disabled = false;
+  placeBetBtn.disabled = true;
 }
 
 function hit() {
